@@ -1,0 +1,4 @@
+blogcool.db
+.eggs/
+__pycache__/
+blogcool.egg.info/

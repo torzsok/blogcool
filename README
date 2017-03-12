@@ -1,0 +1,39 @@
+                   BlogCool
+
+                 a minimal blog application
+
+                 shamelessly copied from flaskr and other sources
+
+
+    ~ What is BlogCool?
+
+      A sqlite powered blog application
+
+    ~ How do I use it?
+
+      1. install the app from the root of the project directory
+
+         pip install --editable .
+
+      2. Instruct flask to use the right application
+
+         export FLASK_APP=blogcool
+
+      3. now you can run blogcool:
+
+         flask run
+
+         the application will greet you on
+         http://localhost:5000/
+
+      4. BlogCool has a JSON API!
+
+         http://localhost:5000/all
+                -- returns all the blogposts ever created
+
+         http://localhost:5000/author/{author}
+                --  returns all blogposts by the specified author
+
+         http://localhost:5000/category/{category}
+                -- returns all blogposts in the specified category
+

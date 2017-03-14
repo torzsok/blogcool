@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Request JSON Test</title>
+
+    </head>
+
+    <body>
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/jonnyreeves/jquery-Mustache/master/jquery.mustache.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+
+
+    <div id="content"></div>
+
+    <div id="sampleArea"></div>
+
+    <ul id="blogposts"></ul>
+
+    <form name="search" method=GET>
+        <label>Author:</label><br>
+        <input type="text" name="author"><br>
+        Category:<br>
+        <input type="text" name="category">
+        <input type="submit" value="Submit">
+    </form>
+
+<script>
+ //  $(document).ready(function() {
+ //      $.getJSON('http://localhost:5000/all?callback=?', function (data) {
+ //
+ //          var template = "Blogposts:<ul>{{#blogposts}}" +
+ //              "<li>{{author}} {{category}}</li>" +
+ //              "{{/blogposts}}</ul>";
+ //          var html = Mustache.render(template, data);
+ //          $("#sampleArea").html(html);
+ //      });
+ //  });
+ //  $(function(){
+ //      $('form[name=search]').submit(function(){
+ //          $.get($(this).attr('action'), $(this).serialize(), function(data) {
+ //
+ //
+ //                    var template = "Blogposts:<ul>{{#blogposts}}" +
+ //                  "<li>{{author}} {{category}}</li>" +
+ //                  "{{/blogposts}}</ul>";
+ //              var html = Mustache.render(template, data);
+ //              $("#sampleArea").html(html);
+ //              alert(data)
+ //          }, 'http://localhost:5000/all?callback=?');
+ //          return false;
+ //      });
+ //  });
+
+    $(function (){
+
+        var $blogposts = $("#blogposts");
+
+        $.ajax({
+        type: "GET",
+        dataType: "jsonp",
+        url: "http://localhost:5000/all",
+        success: function (data) {
+            console.log(data);
+        }
+        });
+
+     });
+
+
+
+</script>
+
+    </body>
+</html>

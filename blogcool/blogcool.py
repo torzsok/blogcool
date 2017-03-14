@@ -9,8 +9,6 @@ from flask_restful import Resource, Api, request
 from peewee import *
 from werkzeug import check_password_hash, generate_password_hash
 
-from functools import wraps
-
 from flask_jsonpify import jsonify
 
 
@@ -40,7 +38,8 @@ db.create_tables([Author, Entry], safe = True)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.from_envvar('BLOGCOOL_SETTINGS', silent=True)
+
+app.secret_key = '5H\x89g|\x91`!\xf1\xdf\xbe\x8cM +a\xf8?B\xb0@9}\xe4'
 
 def auth_user(user):
     session['logged_in'] = True
@@ -74,12 +73,13 @@ def login():
                 username=request.form['username'])
         except Author.DoesNotExist:
             flash('The username entered is incorrect')
-
-        if not check_password_hash(user.pw_hash, request.form['password']):
-            flash('The password entered is incorrect')
         else:
-            auth_user(user)
-            return redirect(url_for('add_entry'))
+            if not check_password_hash(user.pw_hash,
+                    request.form['password']):
+                flash('The password entered is incorrect')
+            else:
+                auth_user(user)
+                return redirect(url_for('add_entry'))
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])

@@ -4,13 +4,13 @@
 """
 
 from flask import Flask, session, g, redirect, url_for, render_template, flash
-from flask_restful import Resource, Api, request
+from flask_restful import Resource, Api, request, reqparse
 
 from peewee import *
 from werkzeug import check_password_hash, generate_password_hash
 
 from flask_jsonpify import jsonify
-
+import json
 
 db = SqliteDatabase('blogcool.db')
 
@@ -128,22 +128,41 @@ api = Api(app)
 
 class Blogposts(Resource):
 
-     def get(self, **kwargs):
+    def get(self, **kwargs):
 
-        rv={'blogposts': []}
-        if 'author' in kwargs:
-           entries = Entry.select().join(Author).where(Author.username == kwargs['author'])
-        elif 'category' in kwargs:
-           entries = Entry.select().where(Entry.category == category)
+        def getentries(keywords):
+            rv = []
+            if 'author' in keywords:
+                if 'category' in keywords:
+                    entries = Entry.select().join(Author) \
+                        .where(Author.username == keywords['author']
+                               & Entry.category == keywords['category'])
+                else:
+                    entries = Entry.select().join(Author) \
+                        .where(Author.username == keywords['author'])
+            else:
+                if 'category' in keywords:
+                    entries = Entry.select().where(Entry.category == keywords['category'])
+                else:
+                    entries = Entry.select()
+
+            for entry in entries:
+                rv.append({'author': entry.author.username,
+                           'category': entry.category,
+                           'text': entry.text})
+
+            return jsonify(rv)
+
+        if 'author' in kwargs or 'category' in kwargs:
+            return getentries(kwargs)
         else:
-           entries = Entry.select()
+            parser = reqparse.RequestParser()
+            parser.add_argument('author', store_missing=False, location='args',)
+            parser.add_argument('category', store_missing=False, location='args')
+            args = parser.parse_args()
 
-        for entry in entries:
-           rv['blogposts'].append({'author': entry.author.username,
-                      'category': entry.category,
-                      'text': entry.text})
+            return getentries(args)
 
-        return jsonify(rv)
 
 api.add_resource(Blogposts, '/category/<string:category>',
                             '/author/<string:author>',

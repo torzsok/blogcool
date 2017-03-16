@@ -134,14 +134,12 @@ class Blogposts(Resource):
             rv = []
             if 'author' in keywords:
                 if 'category' in keywords:
-                    entries = Entry.select().join(Author) \
-                        .where(Author.username == keywords['author']
-                               & Entry.category == keywords['category'])
+                    entries = Entry.select().join(Author)\
+                        .where((Author.username == keywords['author']) & (Entry.category == keywords['category']))
                 else:
-                    entries = Entry.select().join(Author) \
-                        .where(Author.username == keywords['author'])
+                    entries = Entry.select().join(Author).where(Author.username == keywords['author'])
             else:
-                if 'category' in keywords:
+                if 'category'in keywords:
                     entries = Entry.select().where(Entry.category == keywords['category'])
                 else:
                     entries = Entry.select()
@@ -157,9 +155,11 @@ class Blogposts(Resource):
             return getentries(kwargs)
         else:
             parser = reqparse.RequestParser()
-            parser.add_argument('author', store_missing=False, location='args',)
-            parser.add_argument('category', store_missing=False, location='args')
+            parser.add_argument('author', store_missing=False, location='args')
+            parser.add_argument('category', store_missing=True, location='args')
             args = parser.parse_args()
+            if not args['category']:
+                del args['category']
 
             return getentries(args)
 

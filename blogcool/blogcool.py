@@ -155,11 +155,16 @@ class Blogposts(Resource):
             return getentries(kwargs)
         else:
             parser = reqparse.RequestParser()
-            parser.add_argument('author', store_missing=False, location='args')
+            parser.add_argument('author', store_missing=True, location='args')
             parser.add_argument('category', store_missing=True, location='args')
             args = parser.parse_args()
-            if not args['category']:
-                del args['category']
+            if 'category' in args:
+                if not args['category'] or args['category']=="":
+                    del args['category']
+
+            if 'author' in args:
+                if not args['author'] or args['category']=="":
+                    del args['author']
 
             return getentries(args)
 

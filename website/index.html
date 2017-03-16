@@ -3,6 +3,7 @@
     <head>
     <meta charset="utf-8">
     <title>Request JSON Test</title>
+        <link rel="stylesheet" type="text/css" href="styles.css" />
 
     </head>
 
@@ -12,67 +13,48 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript" src="https://rawgit.com/jonnyreeves/jquery-Mustache/master/jquery.mustache.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 
+    <header>
 
-    <div id="content"></div>
+        <h1><br>BlogCool</h1>
 
-    <div id="sampleArea"></div>
+        <h3> Selected authors, curated categories</h3>
 
-    <ul id="blogposts"></ul>
+    </header>
 
-    <form name="search" method=GET>
-        <label>Author:</label><br>
-        <input type="text" name="author"><br>
-        Category:<br>
-        <input type="text" name="category">
-        <input type="submit" value="Submit">
-    </form>
+    <div id="page">
 
-<script>
- //  $(document).ready(function() {
- //      $.getJSON('http://localhost:5000/all?callback=?', function (data) {
- //
- //          var template = "Blogposts:<ul>{{#blogposts}}" +
- //              "<li>{{author}} {{category}}</li>" +
- //              "{{/blogposts}}</ul>";
- //          var html = Mustache.render(template, data);
- //          $("#sampleArea").html(html);
- //      });
- //  });
- //  $(function(){
- //      $('form[name=search]').submit(function(){
- //          $.get($(this).attr('action'), $(this).serialize(), function(data) {
- //
- //
- //                    var template = "Blogposts:<ul>{{#blogposts}}" +
- //                  "<li>{{author}} {{category}}</li>" +
- //                  "{{/blogposts}}</ul>";
- //              var html = Mustache.render(template, data);
- //              $("#sampleArea").html(html);
- //              alert(data)
- //          }, 'http://localhost:5000/all?callback=?');
- //          return false;
- //      });
- //  });
+    <div id="sidebar">
+        <div>
 
-    $(function (){
+        <form id="filter" action="http://localhost:5000/all">
+            <label>Author:</label><br>
+            <input type="text" name="author" placeholder="andrew" title="Fill the form to filter posts"><br>
+            Category:<br>
+            <input type="text" name="category" placeholder="bike" title="Fill the form to filter posts"><br>
+            <input type="submit" value="Submit">
+        </form>
 
-        var $blogposts = $("#blogposts");
+        </div>
 
-        $.ajax({
-        type: "GET",
-        dataType: "jsonp",
-        url: "http://localhost:5000/all",
-        success: function (data) {
-            console.log(data);
-        }
-        });
-
-     });
+</div>
 
 
 
-</script>
 
-    </body>
+        <div id="blogposts"></div>
+
+
+<div class="line"></div>
+
+        <footer>
+            <div class="line"></div>
+
+            <p>Copylight - by Youls tluly</p>
+			<a href="#" class="up">Back to the top</a>
+        </footer>
+</div>
+
+</body>
 </html>
